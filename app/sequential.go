@@ -3,7 +3,7 @@ package app
 import (
 	"fmt"
 	"go_concurrency_test/item"
-	"os"
+	"go_concurrency_test/logger"
 )
 
 var bufferSize = 20
@@ -18,23 +18,21 @@ func ProcessItems(items []item.Item) {
 	for _, targetItem := range items {
 		result, err := item.ProcessItem(targetItem)
 		if err != nil {
-			if _, err := fmt.Fprintln(os.Stderr, fmt.Sprintf("\033[31mProcessing failed: %s\033[0m", err.Error())); err != nil {
-				panic(err)
-			}
+			logger.Error(fmt.Sprintf("Processing failed: %s", err.Error()))
 			failed = true
 			break // 1個でも失敗したら処理を抜ける
 		}
 
-		fmt.Println(result)
+		logger.Info(result)
 
 		processedCount++
 
 		if processedCount%bufferSize == 0 {
-			fmt.Println("Flush buffer!")
+			logger.Info("Flush buffer!")
 		}
 	}
 
 	if !failed && processedCount%bufferSize > 0 {
-		fmt.Println("Flush buffer!")
+		logger.Info("Flush buffer!")
 	}
 }
