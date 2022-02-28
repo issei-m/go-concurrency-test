@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"go_concurrency_test/app"
 	"go_concurrency_test/item"
@@ -13,7 +14,19 @@ import (
 func main() {
 	rand.Seed(time.Now().UnixNano())
 
-	if isDebug() {
+	var (
+		isDebug     = flag.Bool("debug", false, "whether enables debug mode or not")
+		concurrency = flag.Int("concurrency", 0, "the number of concurrency to process items (2 ~ 100)")
+	)
+
+	flag.Parse()
+
+	if *concurrency != 0 && (1 >= *concurrency || *concurrency > 100) {
+		logger.Error("--concurrency must be either 0 or between 2 and 100")
+		os.Exit(1)
+	}
+
+	if *isDebug {
 		logger.EnableDebugLog()
 	}
 
@@ -22,17 +35,11 @@ func main() {
 
 	fmt.Println("Processing start!")
 
-	app.ProcessItems(targetItems)
-
-	fmt.Println("DONE!")
-}
-
-func isDebug() bool {
-	for _, arg := range os.Args {
-		if arg == "--debug" || arg == "-d" {
-			return true
-		}
+	if *concurrency == 0 {
+		app.ProcessItems(targetItems)
+	} else {
+		app.ProcessItemsConcurrently(targetItems, *concurrency)
 	}
 
-	return false
+	fmt.Println("DONE!")
 }
