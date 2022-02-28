@@ -5,8 +5,16 @@ import (
 	"os"
 )
 
+var printDebug = false
+
+func EnableDebugLog() {
+	printDebug = true
+}
+
 func Debug(message string) {
-	fmt.Println(fmt.Sprintf("\033[37m%s\033[0m", message))
+	if printDebug {
+		fmt.Println(fmt.Sprintf("\033[37m%s\033[0m", message))
+	}
 }
 
 func Info(message string) {
