@@ -97,4 +97,6 @@ func ProcessItemsConcurrently(items []item.Item, concurrency int) {
 	if !failed && processedCount%bufferSize > 0 {
 		logger.Info("Flush buffer!")
 	}
+
+	logger.Debug(fmt.Sprintf("Succeeded count: %d", processedCount))
 }
