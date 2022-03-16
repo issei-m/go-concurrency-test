@@ -15,7 +15,7 @@ func main() {
 	rand.Seed(time.Now().UnixNano())
 
 	var (
-		isDebug     = flag.Bool("debug", false, "whether enables debug mode or not")
+		isVerbose   = flag.Bool("verbose", false, "whether outputs debug log or not")
 		concurrency = flag.Int("concurrency", 0, "the number of concurrency to process items (2 ~ 100)")
 	)
 
@@ -26,7 +26,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	if *isDebug {
+	if *isVerbose {
 		logger.EnableDebugLog()
 	}
 
