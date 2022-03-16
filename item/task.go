@@ -6,10 +6,10 @@ import (
 	"time"
 )
 
-// ProcessItem 引数の Item を処理する. 処理に成功した場合は結果を表す内容を string で、失敗した場合は error を返す.
-// 関数内で時間の掛かるブロッキング I/O 処理が走る事を想定している.
+// ProcessItem processes the given Item and returns the result as a string when succeeded, or an error when failed.
+// And this function sleeps for random milliseconds of time to pretend to do some heavy blocking I/O process.
 func ProcessItem(item Item) (string, error) {
-	// ブロッキング I/O のシミュレーション. 処理時間はランダムに 100 ~ 1000 ms とする
+	// Sleep time is range of 100 ~ 1000 ms
 	sleepTime := rand.Intn(900) + 100
 	time.Sleep(time.Duration(sleepTime) * time.Millisecond)
 

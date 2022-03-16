@@ -13,6 +13,7 @@ type taskResult struct {
 	err    error
 }
 
+// ProcessItemsConcurrently does the same thing as ProcessItems does but in concurrency.
 func ProcessItemsConcurrently(items []item.Item, concurrency int) {
 	var chItems = make(chan item.Item)
 	var chTaskResults = make(chan *taskResult)
